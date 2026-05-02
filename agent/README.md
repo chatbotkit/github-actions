@@ -12,7 +12,7 @@ This action executes `cbk agent` via an isolated `npm exec` invocation of `@chat
 - `model` - Optional model name passed to `cbk agent --model`
 - `dataset` - Optional dataset id passed to `cbk agent --dataset`
 - `skillset` - Optional skillset id passed to `cbk agent --skillset`
-- `cli-version` - Optional CLI version to execute, defaults to `1.33.0`
+- `cli-version` - Optional CLI version to execute, defaults to `latest`
 - `node-version` - Optional Node.js version, defaults to `20`
 - `working-directory` - Optional working directory, defaults to `.`
 
@@ -40,7 +40,7 @@ jobs:
           skillset: skillset_123
           prompt: >-
             Read the repository and propose a small documentation improvement.
-          cli-version: 1.33.0
+          cli-version: 1.34.0
           working-directory: .
         env:
           CHATBOTKIT_API_KEY: ${{ secrets.CHATBOTKIT_API_KEY }}

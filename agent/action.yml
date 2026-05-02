@@ -24,7 +24,7 @@ inputs:
   cli-version:
     description: Version of `@chatbotkit/cli` to execute.
     required: false
-    default: 1.33.0
+    default: latest
   node-version:
     description: Node.js version used to install and run the CLI.
     required: false
