@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: chatbotkit/github-actions/agent@v1
+      - uses: chatbotkit/github-actions/agent@v0
         with:
           tools: read,write,edit,find,exec
           bot: bot_123
