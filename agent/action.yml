@@ -1,0 +1,117 @@
+name: ChatBotKit Agent
+description: Run the ChatBotKit CLI agent inside a GitHub Actions workflow.
+author: ChatBotKit
+
+inputs:
+  prompt:
+    description: Task prompt passed to `cbk agent`.
+    required: true
+  tools:
+    description: Optional tool list forwarded to `cbk agent --tools`.
+    required: false
+  bot:
+    description: Optional bot id forwarded to `cbk agent --bot`.
+    required: false
+  model:
+    description: Optional model name forwarded to `cbk agent --model`.
+    required: false
+  dataset:
+    description: Optional dataset id forwarded to `cbk agent --dataset`.
+    required: false
+  skillset:
+    description: Optional skillset id forwarded to `cbk agent --skillset`.
+    required: false
+  cli-version:
+    description: Version of `@chatbotkit/cli` to execute.
+    required: false
+    default: 1.33.0
+  node-version:
+    description: Node.js version used to install and run the CLI.
+    required: false
+    default: '20'
+  working-directory:
+    description: Working directory where the agent command should run.
+    required: false
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Run agent
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        CBK_PROMPT: ${{ inputs.prompt }}
+        CBK_TOOLS: ${{ inputs.tools }}
+        CBK_BOT: ${{ inputs.bot }}
+        CBK_MODEL: ${{ inputs.model }}
+        CBK_DATASET: ${{ inputs.dataset }}
+        CBK_SKILLSET: ${{ inputs.skillset }}
+      run: |
+        set -euo pipefail
+
+        prompt="$CBK_PROMPT"
+
+        cmd=(npm exec --yes "@chatbotkit/cli@${{ inputs.cli-version }}" -- agent --prompt "$prompt")
+
+        if [[ -n "$CBK_TOOLS" ]]; then
+          cmd+=(--tools "$CBK_TOOLS")
+        fi
+
+        if [[ -n "$CBK_BOT" ]]; then
+          cmd+=(--bot "$CBK_BOT")
+        fi
+
+        if [[ -n "$CBK_MODEL" ]]; then
+          cmd+=(--model "$CBK_MODEL")
+        fi
+
+        if [[ -n "$CBK_DATASET" ]]; then
+          cmd+=(--dataset "$CBK_DATASET")
+        fi
+
+        if [[ -n "$CBK_SKILLSET" ]]; then
+          cmd+=(--skillset "$CBK_SKILLSET")
+        fi
+
+        echo "Running ChatBotKit agent"
+        echo "CLI version: ${{ inputs.cli-version }}"
+        echo "Working directory: $PWD"
+        echo "Prompt length: ${#prompt}"
+
+        if [[ -n "$CBK_TOOLS" ]]; then
+          echo "Tools: $CBK_TOOLS"
+        else
+          echo "Tools: default"
+        fi
+
+        if [[ -n "$CBK_BOT" ]]; then
+          echo "Bot: $CBK_BOT"
+        else
+          echo "Bot: none"
+        fi
+
+        if [[ -n "$CBK_MODEL" ]]; then
+          echo "Model: $CBK_MODEL"
+        else
+          echo "Model: default"
+        fi
+
+        if [[ -n "$CBK_DATASET" ]]; then
+          echo "Dataset: $CBK_DATASET"
+        else
+          echo "Dataset: none"
+        fi
+
+        if [[ -n "$CBK_SKILLSET" ]]; then
+          echo "Skillset: $CBK_SKILLSET"
+        else
+          echo "Skillset: none"
+        fi
+
+        "${cmd[@]}"
