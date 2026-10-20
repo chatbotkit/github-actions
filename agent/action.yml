@@ -28,7 +28,7 @@ inputs:
   node-version:
     description: Node.js version used to install and run the CLI.
     required: false
-    default: '20'
+    default: '24.20.0'
   working-directory:
     description: Working directory where the agent command should run.
     required: false
@@ -38,7 +38,7 @@ runs:
   using: composite
   steps:
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ inputs.node-version }}
 
