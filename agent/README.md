@@ -20,7 +20,7 @@ The optional CLI-facing inputs are applied in this order: `tools`, `bot`, `model
 
 ## Required Environment
 
-Set the secrets and environment variables required by your ChatBotKit CLI configuration. In most cases that means exporting `CHATBOTKIT_API_KEY` from repository or organization secrets.
+Set the secrets and environment variables required by your ChatBotKit CLI configuration. In most cases that means exporting `CHATBOTKIT_API_TOKEN` from repository or organization secrets. CLI versions from before that name was introduced read `CHATBOTKIT_API_SECRET` instead, so set both when you pin an older `cli-version`.
 
 ## Example
 
@@ -29,7 +29,7 @@ jobs:
   agent:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: chatbotkit/github-actions/agent@v0
         with:
@@ -43,7 +43,8 @@ jobs:
           cli-version: 1.34.0
           working-directory: .
         env:
-          CHATBOTKIT_API_KEY: ${{ secrets.CHATBOTKIT_API_KEY }}
+          CHATBOTKIT_API_TOKEN: ${{ secrets.CHATBOTKIT_API_TOKEN }}
+          CHATBOTKIT_API_SECRET: ${{ secrets.CHATBOTKIT_API_TOKEN }}
 ```
 
 ## Notes
